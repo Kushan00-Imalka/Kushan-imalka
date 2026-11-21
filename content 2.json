@@ -1,0 +1,157 @@
+{
+  "site": {
+    "name": "Loose Leaf",
+    "eyebrow": "Notes from a small desk",
+    "headline": "Slow notes on tea, paper and walking home.",
+    "intro": "Notes on tea, paper and everyday rituals, written by Kushan Imalka.",
+    "author": "Kushan Imalka",
+    "aboutIntro": "My education, the platforms I learn on, my work so far and where I am heading.",
+    "bio": "Writes about everyday rituals from a small desk by a window. Drinks too much tea."
+  },
+  "about": {
+    "education": [
+      {
+        "title": "Your degree or course",
+        "meta": "School or institute · 2021 – 2025",
+        "text": "A line about what you studied."
+      }
+    ],
+    "learning": [
+      {
+        "title": "Online course or platform",
+        "meta": "Topic · 2025",
+        "text": "What you taught yourself, for example web design or a new language."
+      },
+      {
+        "title": "Another platform you learn on",
+        "meta": "Topic · 2026",
+        "text": "What you are practising right now."
+      }
+    ],
+    "work": [
+      {
+        "title": "Your job title",
+        "meta": "Company · 2024 – Present",
+        "text": "What you do there and one result you are proud of."
+      }
+    ],
+    "goals": [
+      {
+        "title": "Your first goal",
+        "meta": "By the end of 2027",
+        "text": "Why it matters to you."
+      },
+      {
+        "title": "Your second goal",
+        "meta": "Ongoing",
+        "text": "How you plan to get there."
+      }
+    ],
+    "contact": [
+      {
+        "label": "Email",
+        "value": "your.name@email.com"
+      },
+      {
+        "label": "Phone",
+        "value": "+94 00 000 0000"
+      },
+      {
+        "label": "LinkedIn",
+        "value": "linkedin.com/in/your-name"
+      }
+    ]
+  },
+  "posts": [
+    {
+      "id": "a1",
+      "title": "The case for a slower morning",
+      "category": "Living",
+      "date": "2026-11-18",
+      "cover": {
+        "k": 0
+      },
+      "excerpt": "Twenty minutes with no screen changed how the rest of my day feels. Here is what I do and what I skipped.",
+      "body": [
+        "For years my mornings began with a phone in one hand and a kettle in the other. The kettle always lost. Somewhere in the scroll the water went cold, and the day started on someone else's schedule.",
+        "Now the first twenty minutes belong to me. I boil water, open the window, and write three lines in a notebook: what I am looking forward to, what is worrying me, and one small thing I will finish.",
+        "It is not a productivity trick. Nothing gets optimised. I simply arrive at my desk already knowing where I stand, and that turns out to be most of what I wanted from a routine."
+      ]
+    },
+    {
+      "id": "a2",
+      "title": "Seven notes on brewing better tea",
+      "category": "Tea",
+      "date": "2026-11-09",
+      "cover": {
+        "k": 3
+      },
+      "excerpt": "Water temperature, a quick rinse and a kinder ratio will improve almost any cup. A short list from my kitchen.",
+      "body": [
+        "Start with the water. Green teas prefer it well below boiling, around 80°C, while black and herbal teas can take it fresh off the boil. Hot water on delicate leaves is the quickest route to a bitter cup.",
+        "Measure the leaf. A level teaspoon per cup is a fine start, but weigh it once and you will see how much a heaped spoon varies. Two grams per 200 ml is a steady place to begin.",
+        "Rinse, steep, taste. A quick rinse wakes the leaf, and tasting at the two-minute mark teaches you more than any timer. Stop when it is where you like it, not when the clock says so."
+      ]
+    },
+    {
+      "id": "a3",
+      "title": "What a notebook can do that an app can't",
+      "category": "Writing",
+      "date": "2026-10-27",
+      "cover": {
+        "k": 2
+      },
+      "excerpt": "Paper has no notifications, no sync errors and no opinion about your formatting. That is the point.",
+      "body": [
+        "I have tried every notes app. They are all good, and I have lost something in each of them: a half-formed idea, a list, a whole Tuesday. The notebook on my desk has never lost anything because it has never been closed by accident.",
+        "Paper also forces small decisions. You cannot move a paragraph, so you think before you write it. Crossings out stay visible, which makes it easy to see how an idea changed.",
+        "I still keep an app for anything I need to search. But for thinking I reach for the pen, and the pages are slowly turning into a map of the year."
+      ]
+    },
+    {
+      "id": "a4",
+      "title": "A week of walking to work",
+      "category": "Living",
+      "date": "2026-10-12",
+      "cover": {
+        "k": 4
+      },
+      "excerpt": "Forty minutes each way, no headphones. What I noticed and what I stopped carrying.",
+      "body": [
+        "The route is 3.5 kilometres, which takes forty minutes at an unhurried pace. On Monday I took my headphones out of habit. By Wednesday I left them at home and started hearing the street.",
+        "Walking turned out to be the best meeting of my week. Problems that felt tangled at my desk loosened somewhere near the bridge, and I began carrying a small notebook to catch them.",
+        "I stopped carrying a heavy bag, too. A water bottle, a wallet, keys and a book. Everything else turned out to be optional."
+      ]
+    },
+    {
+      "id": "a5",
+      "title": "How I plan a trip on a single page",
+      "category": "Travel",
+      "date": "2026-09-30",
+      "cover": {
+        "k": 1
+      },
+      "excerpt": "One sheet, four boxes, and a rule about leaving the afternoons empty.",
+      "body": [
+        "Every trip I have over-planned ended with a spreadsheet I never opened. Now I use one page divided into four boxes: where we sleep, how we move, what we must see, and what we might do.",
+        "The must-see box holds three things at most. If we manage them, the trip was a success and everything else is a bonus. This takes the pressure off in a way a long itinerary never does.",
+        "The rule I like best is to leave every afternoon empty. The best meals and the strangest conversations of my travels have happened in the gaps."
+      ]
+    },
+    {
+      "id": "a6",
+      "title": "Small rules for a tidy desk",
+      "category": "Work",
+      "date": "2026-09-14",
+      "cover": {
+        "k": 5
+      },
+      "excerpt": "Five habits that keep a workspace calm without turning it into a showroom.",
+      "body": [
+        "A tidy desk is not about looking organised. It is about starting each task without having to move something first. I keep only what I used today within arm's reach.",
+        "The rules are simple. One cup, one notebook, one pen that works. Cables go behind, not across. Anything that lands on the desk gets a home or leaves by Friday.",
+        "Fridays end with a two-minute reset. Wipe the surface, return the cups, close the tabs. Monday's version of me is always grateful."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Loose Leaf, a personal blog by Kushan Imalka.">
+<style>[hidden]{display:none!important} body{margin:0} img{max-width:100%} :root{color-scheme:light}</style>
+<title>Loose Leaf</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: sticky slim header, big type-led hero, filter row, magazine grid with one wide featured card, full-screen reader. */
+:root {
+  --bg: #f2f5f4;
+  --surface: #ffffff;
+  --fg: #10282b;
+  --muted: #566c70;
+  --line: #d9e2e1;
+  --accent: #0b7a75;
+  --accent-ink: #ffffff;
+  --accent-soft: #dff1ef;
+  --hl: #f6c453;
+  --danger: #b42318;
+  --shadow: 0 1px 2px rgba(16,40,43,.06), 0 8px 24px rgba(16,40,43,.06);
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --text: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c1a1c; --surface: #132427; --fg: #e6f0ef; --muted: #8fa8ab; --line: #243a3d;
+    --accent: #3fc1b6; --accent-ink: #06201f; --accent-soft: #173533; --danger: #ff8a7a;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c1a1c; --surface: #132427; --fg: #e6f0ef; --muted: #8fa8ab; --line: #243a3d;
+  --accent: #3fc1b6; --accent-ink: #06201f; --accent-soft: #173533; --danger: #ff8a7a;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font: 400 1rem/1.6 var(--text);
+  padding-block: 0 2rem;
+  -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+.wrap { width: 100%; max-width: 1080px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* header */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .7rem; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: .6rem; font: 700 1.25rem/1 var(--display); letter-spacing: -.01em; min-width: 0; }
+.mark { width: 1.35rem; height: 1.35rem; background: var(--accent); border-radius: 0 100% 0 100%; flex: none; transform: rotate(-8deg); }
+.actions { display: flex; align-items: center; gap: .6rem; }
+.btn { border: 1px solid var(--line); background: var(--surface); padding: .45rem .85rem; border-radius: 999px; font-weight: 500; font-size: .9rem; display: inline-flex; align-items: center; gap: .4rem; transition: border-color .15s, transform .15s; }
+.btn:hover { border-color: var(--accent); }
+.btn:active { transform: translateY(1px); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.danger { color: var(--danger); }
+.btn.round { width: 2.3rem; height: 2.3rem; padding: 0; justify-content: center; }
+.switch { display: inline-flex; align-items: center; gap: .55rem; border: 1px solid var(--line); background: var(--surface); padding: .3rem .8rem .3rem .35rem; border-radius: 999px; font-size: .9rem; font-weight: 500; }
+.switch .track { width: 2.3rem; height: 1.3rem; border-radius: 999px; background: var(--line); position: relative; transition: background .2s; flex: none; }
+.switch .knob { position: absolute; top: .15rem; left: .15rem; width: 1rem; height: 1rem; border-radius: 50%; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: transform .2s; }
+.switch[aria-checked="true"] .track { background: var(--accent); }
+.switch[aria-checked="true"] .knob { transform: translateX(1rem); }
+.tools { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; padding-block: 0 .75rem; }
+.hint { color: var(--muted); font-size: .85rem; }
+
+/* editable text */
+.is-editable { outline: 2px dashed color-mix(in srgb, var(--accent) 55%, transparent); outline-offset: 4px; border-radius: 6px; cursor: text; }
+.is-editable:focus { outline: 2px solid var(--accent); background: var(--accent-soft); }
+.is-editable:empty::before { content: "Write something"; color: var(--muted); }
+
+/* hero */
+.hero { padding-block: clamp(2rem, 6vw, 4.5rem) 1.5rem; display: grid; gap: 1rem; }
+.eyebrow { display: inline-flex; width: fit-content; max-width: 100%; align-items: center; gap: .5rem; font-size: .8rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.eyebrow::before { content: ""; width: 1.6rem; height: 2px; background: var(--hl); flex: none; }
+.hero h1 { font: 700 clamp(2.2rem, 7vw, 4.4rem)/1.02 var(--display); letter-spacing: -.03em; margin: 0; max-width: 18ch; text-wrap: balance; font-variation-settings: "opsz" 96; }
+.intro { font-size: 1.1rem; color: var(--muted); max-width: 52ch; margin: 0; }
+
+/* filters */
+.filters { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: space-between; align-items: center; padding-block: 1rem; border-top: 1px solid var(--line); }
+.chips { display: flex; flex-wrap: wrap; gap: .5rem; min-width: 0; }
+.chip { border: 1px solid var(--line); background: transparent; padding: .3rem .85rem; border-radius: 999px; font-size: .9rem; font-weight: 500; color: var(--muted); }
+.chip:hover { color: var(--fg); border-color: var(--fg); }
+.chip[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.search { width: min(100%, 240px); border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: .45rem 1rem; }
+.search::placeholder { color: var(--muted); }
+
+/* grid */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 1.25rem; padding-block: .5rem 2rem; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; box-shadow: var(--shadow); transition: transform .2s, border-color .2s; min-width: 0; }
+.card:hover { transform: translateY(-3px); border-color: var(--accent); }
+body.editing .card:hover { transform: none; }
+.cover { aspect-ratio: 16 / 10; width: 100%; background-size: cover; background-position: center; }
+.card-body { padding: 1.1rem 1.2rem 1.3rem; display: flex; flex-direction: column; gap: .6rem; flex: 1; min-width: 0; }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .6rem; font-size: .82rem; color: var(--muted); }
+.tag { background: var(--accent-soft); color: var(--accent); font-weight: 600; padding: .1rem .6rem; border-radius: 999px; }
+.card h3 { font: 650 1.35rem/1.15 var(--display); letter-spacing: -.015em; margin: 0; text-wrap: balance; overflow-wrap: anywhere; }
+.card p.excerpt { margin: 0; color: var(--muted); overflow-wrap: anywhere; }
+.card .read { margin-top: auto; align-self: flex-start; border: 0; background: none; padding: .2rem 0; font-weight: 600; color: var(--accent); }
+.card .read:hover { text-decoration: underline; text-underline-offset: 4px; }
+@media (min-width: 760px) {
+  .card.featured { grid-column: 1 / -1; flex-direction: row; }
+  .card.featured .cover { aspect-ratio: auto; width: 52%; min-height: 320px; }
+  .card.featured h3 { font-size: clamp(1.8rem, 3.2vw, 2.4rem); }
+  .card.featured .card-body { padding: 1.8rem; justify-content: center; }
+}
+.empty { grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; color: var(--muted); border: 1px dashed var(--line); border-radius: 16px; }
+
+/* about */
+.about { padding-block: 2rem 1rem; border-top: 1px solid var(--line); display: grid; gap: 1.25rem; scroll-margin-top: 5rem; }
+.about h2 { font: 700 clamp(1.8rem, 4vw, 2.6rem)/1.1 var(--display); letter-spacing: -.02em; margin: 0; }
+.about .intro { margin: 0; }
+.about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 1.25rem; align-items: start; }
+.about-card { min-width: 0; align-content: start; }
+.about-card h3 { font: 650 1.1rem var(--display); margin: 0; color: var(--accent); }
+.about-card.contact { grid-column: 1 / -1; }
+.item { display: grid; gap: .2rem; padding-top: .9rem; border-top: 1px solid var(--line); justify-items: start; min-width: 0; }
+.item h4 { font: 650 1.05rem/1.3 var(--display); margin: 0; overflow-wrap: anywhere; }
+.item-meta { margin: 0; color: var(--muted); font-size: .88rem; overflow-wrap: anywhere; }
+.item-text { margin: .2rem 0 0; overflow-wrap: anywhere; }
+.btn.small { padding: .25rem .7rem; font-size: .82rem; margin-top: .4rem; }
+.contact-row { display: flex; flex-wrap: wrap; gap: .4rem .8rem; align-items: center; padding-top: .9rem; border-top: 1px solid var(--line); }
+.contact-row .lbl { font-size: .78rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); min-width: 5.5rem; }
+.contact-row .val { flex: 1 1 200px; min-width: 0; overflow-wrap: anywhere; font-weight: 500; }
+
+/* author */
+.author { display: flex; gap: 1.1rem; align-items: center; padding-block: 1.75rem; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.avatar { width: 3.6rem; height: 3.6rem; border-radius: 50%; background: var(--hl); color: #10282b; display: grid; place-items: center; font: 700 1.5rem/1 var(--display); flex: none; }
+.author-text { min-width: 0; flex: 1 1 260px; }
+.author-text strong { font: 650 1.1rem var(--display); display: block; }
+.author-text span { color: var(--muted); }
+footer { color: var(--muted); font-size: .85rem; padding-block: 1rem; }
+
+/* reader */
+.reader { position: fixed; inset: 0; z-index: 40; background: var(--bg); overflow-y: auto; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.reader-in { max-width: 760px; margin-inline: auto; padding: 1rem max(16px, env(safe-area-inset-right, 0px)) 4rem max(16px, env(safe-area-inset-left, 0px)); display: grid; gap: 1.25rem; }
+.reader-top { display: flex; justify-content: space-between; gap: .6rem; flex-wrap: wrap; }
+.reader .cover { border-radius: 18px; aspect-ratio: 16 / 8; }
+.reader h1 { font: 700 clamp(2rem, 6vw, 3.1rem)/1.05 var(--display); letter-spacing: -.025em; margin: 0; text-wrap: balance; overflow-wrap: anywhere; }
+.prose { font-size: 1.12rem; line-height: 1.75; display: grid; gap: 1.1rem; max-width: 65ch; }
+.prose p { margin: 0; }
+.prose > p:first-child::first-letter { font: 700 3.1rem/.85 var(--display); float: left; padding: .35rem .5rem 0 0; color: var(--accent); }
+.prose.is-editable { display: block; white-space: pre-wrap; }
+.prose.is-editable > p::first-letter { all: unset; }
+.field { display: grid; gap: .3rem; }
+.field label { font-size: .78rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.field input { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: .5rem .75rem; width: 100%; }
+.field-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+.swatches { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.sw { width: 2.4rem; height: 2.4rem; border-radius: 10px; border: 2px solid transparent; background-size: cover; padding: 0; }
+.sw[aria-pressed="true"] { border-color: var(--fg); box-shadow: 0 0 0 2px var(--bg) inset; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1rem; display: grid; gap: 1rem; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* data modal */
+.modal { position: fixed; inset: 0; z-index: 60; background: rgba(5,15,16,.6); display: grid; place-items: center; padding: 1rem max(16px, env(safe-area-inset-right, 0px)) 1rem max(16px, env(safe-area-inset-left, 0px)); }
+.modal-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 1.25rem; width: min(100%, 640px); display: grid; gap: .8rem; max-height: 100%; }
+.modal-card h2 { margin: 0; font: 650 1.3rem var(--display); }
+.modal-card p { margin: 0; color: var(--muted); font-size: .92rem; }
+.modal-card textarea { width: 100%; min-height: 240px; resize: vertical; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--fg); padding: .75rem; font: 12px/1.5 ui-monospace, Menlo, Consolas, monospace; }
+.modal-actions { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: flex-end; }
+
+.toast { position: fixed; left: 50%; bottom: calc(1.2rem + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--fg); color: var(--bg); padding: .6rem 1.1rem; border-radius: 999px; font-size: .9rem; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 80; max-width: calc(100% - 32px); text-align: center; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+
+<header class="top">
+  <div class="wrap bar">
+    <div class="brand"><span class="mark" aria-hidden="true"></span><span data-field="name"></span></div>
+    <div class="actions">
+      <button class="btn" id="aboutBtn" type="button">About me</button>
+      <button class="btn round" id="themeBtn" type="button" aria-label="Switch light or dark theme" title="Switch theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <button class="switch" id="editSwitch" type="button" role="switch" aria-checked="false" hidden>
+        <span class="track"><span class="knob"></span></span><span>Edit mode</span>
+      </button>
+    </div>
+  </div>
+  <div class="wrap tools" id="tools" hidden>
+    <button class="btn primary" id="newPost" type="button">+ New post</button>
+    <button class="btn" id="dataBtn" type="button">Copy or import data</button>
+    <button class="btn danger" id="resetBtn" type="button">Discard my changes</button>
+    <button class="btn" id="exitBtn" type="button">Exit owner mode</button>
+    <span class="hint">Click any text to change it. Changes save in this browser.</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <p class="eyebrow" data-field="eyebrow"></p>
+    <h1 data-field="headline"></h1>
+    <p class="intro" data-field="intro"></p>
+  </section>
+
+  <div class="filters">
+    <div class="chips" id="chips" role="group" aria-label="Filter by topic"></div>
+    <input class="search" id="search" type="search" placeholder="Search posts" aria-label="Search posts">
+  </div>
+
+  <section class="grid" id="grid" aria-live="polite"></section>
+
+  <section class="about" id="about">
+    <h2>About me</h2>
+    <p class="intro" data-field="aboutIntro"></p>
+    <div class="about-grid" id="aboutGrid"></div>
+  </section>
+
+  <section class="author">
+    <div class="avatar" id="avatar" aria-hidden="true"></div>
+    <div class="author-text">
+      <strong data-field="author"></strong>
+      <span data-field="bio"></span>
+    </div>
+  </section>
+  <footer>© 2026 Loose Leaf by Kushan Imalka.</footer>
+</main>
+
+<div class="reader" id="reader" role="dialog" aria-modal="true" aria-label="Post" hidden></div>
+<div class="modal" id="modal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h2 id="modalTitle">Your blog data</h2>
+    <p>To publish your changes, copy this text and paste it into content.json on your host, replacing everything in that file. To load saved data into this browser, paste it here and choose Apply.</p>
+    <textarea id="dataText" spellcheck="false" aria-label="Blog data as JSON"></textarea>
+    <div class="modal-actions">
+      <button class="btn" id="dataClose" type="button">Close</button>
+      <button class="btn" id="dataCopy" type="button">Copy</button>
+      <button class="btn primary" id="dataApply" type="button">Apply</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function () {
+  var KEY = "loose-leaf-v1", THEME_KEY = "loose-leaf-theme";
+  var COVERS = [
+    "radial-gradient(circle at 22% 28%, #f6c453 0 13%, transparent 14%), linear-gradient(135deg, #0b7a75, #0f3b46)",
+    "radial-gradient(circle at 78% 68%, #ffd9b0 0 17%, transparent 18%), linear-gradient(160deg, #2f4b7c, #142238)",
+    "repeating-linear-gradient(45deg, rgba(255,255,255,.13) 0 10px, transparent 10px 24px), linear-gradient(120deg, #d97706, #7c2d12)",
+    "radial-gradient(circle at 72% 30%, rgba(255,255,255,.4) 0 10%, transparent 11%), linear-gradient(135deg, #4d7c0f, #14532d)",
+    "radial-gradient(circle at 30% 75%, rgba(255,255,255,.25) 0 22%, transparent 23%), conic-gradient(from 200deg at 30% 70%, #0e7490, #164e63, #0e7490)",
+    "repeating-linear-gradient(0deg, rgba(255,255,255,.1) 0 6px, transparent 6px 16px), linear-gradient(135deg, #be185d, #4c0519)"
+  ];
+
+  var SAMPLE = {
+    site: {
+      name: "Loose Leaf",
+      eyebrow: "Notes from a small desk",
+      headline: "Slow notes on tea, paper and walking home.",
+      intro: "Notes on tea, paper and everyday rituals, written by Kushan Imalka.",
+      author: "Kushan Imalka",
+      aboutIntro: "My education, the platforms I learn on, my work so far and where I am heading.",
+      bio: "Writes about everyday rituals from a small desk by a window. Drinks too much tea."
+    },
+    about: {
+      education: [
+        { title: "Your degree or course", meta: "School or institute · 2021 – 2025", text: "A line about what you studied." }
+      ],
+      learning: [
+        { title: "Online course or platform", meta: "Topic · 2025", text: "What you taught yourself, for example web design or a new language." },
+        { title: "Another platform you learn on", meta: "Topic · 2026", text: "What you are practising right now." }
+      ],
+      work: [
+        { title: "Your job title", meta: "Company · 2024 – Present", text: "What you do there and one result you are proud of." }
+      ],
+      goals: [
+        { title: "Your first goal", meta: "By the end of 2027", text: "Why it matters to you." },
+        { title: "Your second goal", meta: "Ongoing", text: "How you plan to get there." }
+      ],
+      contact: [
+        { label: "Email", value: "your.name@email.com" },
+        { label: "Phone", value: "+94 00 000 0000" },
+        { label: "LinkedIn", value: "linkedin.com/in/your-name" }
+      ]
+    },
+    posts: [
+      { id: "a1", title: "The case for a slower morning", category: "Living", date: "2026-11-18", cover: { k: 0 },
+        excerpt: "Twenty minutes with no screen changed how the rest of my day feels. Here is what I do and what I skipped.",
+        body: [
+          "For years my mornings began with a phone in one hand and a kettle in the other. The kettle always lost. Somewhere in the scroll the water went cold, and the day started on someone else's schedule.",
+          "Now the first twenty minutes belong to me. I boil water, open the window, and write three lines in a notebook: what I am looking forward to, what is worrying me, and one small thing I will finish.",
+          "It is not a productivity trick. Nothing gets optimised. I simply arrive at my desk already knowing where I stand, and that turns out to be most of what I wanted from a routine."
+        ] },
+      { id: "a2", title: "Seven notes on brewing better tea", category: "Tea", date: "2026-11-09", cover: { k: 3 },
+        excerpt: "Water temperature, a quick rinse and a kinder ratio will improve almost any cup. A short list from my kitchen.",
+        body: [
+          "Start with the water. Green teas prefer it well below boiling, around 80°C, while black and herbal teas can take it fresh off the boil. Hot water on delicate leaves is the quickest route to a bitter cup.",
+          "Measure the leaf. A level teaspoon per cup is a fine start, but weigh it once and you will see how much a heaped spoon varies. Two grams per 200 ml is a steady place to begin.",
+          "Rinse, steep, taste. A quick rinse wakes the leaf, and tasting at the two-minute mark teaches you more than any timer. Stop when it is where you like it, not when the clock says so."
+        ] },
+      { id: "a3", title: "What a notebook can do that an app can't", category: "Writing", date: "2026-10-27", cover: { k: 2 },
+        excerpt: "Paper has no notifications, no sync errors and no opinion about your formatting. That is the point.",
+        body: [
+          "I have tried every notes app. They are all good, and I have lost something in each of them: a half-formed idea, a list, a whole Tuesday. The notebook on my desk has never lost anything because it has never been closed by accident.",
+          "Paper also forces small decisions. You cannot move a paragraph, so you think before you write it. Crossings out stay visible, which makes it easy to see how an idea changed.",
+          "I still keep an app for anything I need to search. But for thinking I reach for the pen, and the pages are slowly turning into a map of the year."
+        ] },
+      { id: "a4", title: "A week of walking to work", category: "Living", date: "2026-10-12", cover: { k: 4 },
+        excerpt: "Forty minutes each way, no headphones. What I noticed and what I stopped carrying.",
+        body: [
+          "The route is 3.5 kilometres, which takes forty minutes at an unhurried pace. On Monday I took my headphones out of habit. By Wednesday I left them at home and started hearing the street.",
+          "Walking turned out to be the best meeting of my week. Problems that felt tangled at my desk loosened somewhere near the bridge, and I began carrying a small notebook to catch them.",
+          "I stopped carrying a heavy bag, too. A water bottle, a wallet, keys and a book. Everything else turned out to be optional."
+        ] },
+      { id: "a5", title: "How I plan a trip on a single page", category: "Travel", date: "2026-09-30", cover: { k: 1 },
+        excerpt: "One sheet, four boxes, and a rule about leaving the afternoons empty.",
+        body: [
+          "Every trip I have over-planned ended with a spreadsheet I never opened. Now I use one page divided into four boxes: where we sleep, how we move, what we must see, and what we might do.",
+          "The must-see box holds three things at most. If we manage them, the trip was a success and everything else is a bonus. This takes the pressure off in a way a long itinerary never does.",
+          "The rule I like best is to leave every afternoon empty. The best meals and the strangest conversations of my travels have happened in the gaps."
+        ] },
+      { id: "a6", title: "Small rules for a tidy desk", category: "Work", date: "2026-09-14", cover: { k: 5 },
+        excerpt: "Five habits that keep a workspace calm without turning it into a showroom.",
+        body: [
+          "A tidy desk is not about looking organised. It is about starting each task without having to move something first. I keep only what I used today within arm's reach.",
+          "The rules are simple. One cup, one notebook, one pen that works. Cables go behind, not across. Anything that lands on the desk gets a home or leaves by Friday.",
+          "Fridays end with a two-minute reset. Wipe the surface, return the cups, close the tabs. Monday's version of me is always grateful."
+        ] }
+    ]
+  };
+
+  var $ = function (s) { return document.querySelector(s); };
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  function valid(o) { return o && o.site && Array.isArray(o.posts); }
+  function load() { try { var s = localStorage.getItem(KEY); var o = s ? JSON.parse(s) : null; return valid(o) ? o : null; } catch (e) { return null; } }
+
+  var OWNER_KEY = "kushan-edit-2026";
+  var OWNER_FLAG = "loose-leaf-owner";
+  if (location.hash === "#" + OWNER_KEY) { try { localStorage.setItem(OWNER_FLAG, "1"); } catch (e) {} history.replaceState(null, "", location.pathname + location.search); }
+  var owner = false;
+  try { owner = localStorage.getItem(OWNER_FLAG) === "1"; } catch (e) {}
+  var draft = owner ? load() : null;
+  var state = draft || clone(SAMPLE);
+  if (state.site.author === "Nora Hale") state.site.author = "Kushan Imalka";
+  if (!state.about) state.about = clone(SAMPLE.about);
+  if (!state.site.aboutIntro) state.site.aboutIntro = SAMPLE.site.aboutIntro;
+  var editing = false, filter = "All", query = "", openId = null, saveTimer = null;
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); }
+    catch (e) { toast("Could not save here. Your edits stay until you close the page."); }
+  }
+  function saveSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(save, 300); }
+
+  function h(tag, props) {
+    var n = document.createElement(tag);
+    props = props || {};
+    for (var k in props) {
+      var v = props[k];
+      if (k === "class") n.className = v;
+      else if (k === "text") n.textContent = v;
+      else if (k.slice(0, 2) === "on") n.addEventListener(k.slice(2), v);
+      else if (v !== false && v != null) n.setAttribute(k, v === true ? "" : v);
+    }
+    for (var i = 2; i < arguments.length; i++) { var c = arguments[i]; if (c != null) n.append(c); }
+    return n;
+  }
+  function oneLine(t) { return t.replace(/\s+/g, " ").trim(); }
+  function fmtDate(iso) {
+    var d = new Date(iso + "T00:00:00");
+    return isNaN(d) ? "" : d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+  }
+  function minutes(p) { return Math.max(1, Math.ceil(p.body.join(" ").split(/\s+/).length / 200)); }
+  function paintCover(node, c) {
+    if (c && c.img) { node.style.backgroundImage = 'url("' + c.img + '")'; }
+    else { node.style.backgroundImage = COVERS[(c && c.k) || 0] || COVERS[0]; }
+  }
+  function toast(msg) {
+    var t = $("#toast"); t.textContent = msg; t.classList.add("show");
+    clearTimeout(toast.t); toast.t = setTimeout(function () { t.classList.remove("show"); }, 2600);
+  }
+  function editable(node, single, onChange) {
+    if (!editing) return node;
+    node.setAttribute("contenteditable", "true");
+    node.classList.add("is-editable");
+    node.addEventListener("input", function () { onChange(single ? oneLine(node.innerText) : node.innerText); });
+    if (single) node.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); node.blur(); } });
+    node.addEventListener("click", function (e) { e.stopPropagation(); });
+    return node;
+  }
+
+  /* site fields */
+  var fields = document.querySelectorAll("[data-field]");
+  function paintFields() {
+    fields.forEach(function (n) {
+      var f = n.dataset.field;
+      n.textContent = state.site[f] || "";
+      if (editing) { n.setAttribute("contenteditable", "true"); n.classList.add("is-editable"); }
+      else { n.removeAttribute("contenteditable"); n.classList.remove("is-editable"); }
+    });
+    $("#avatar").textContent = (state.site.author || "?").trim().charAt(0).toUpperCase();
+  }
+  fields.forEach(function (n) {
+    n.addEventListener("input", function () {
+      state.site[n.dataset.field] = oneLine(n.innerText);
+      if (n.dataset.field === "author") $("#avatar").textContent = (state.site.author || "?").charAt(0).toUpperCase();
+      saveSoon();
+    });
+    n.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); n.blur(); } });
+  });
+  document.addEventListener("paste", function (e) {
+    var t = e.target;
+    if (t && t.isContentEditable) {
+      e.preventDefault();
+      var txt = (e.clipboardData || window.clipboardData).getData("text/plain");
+      document.execCommand("insertText", false, txt);
+    }
+  });
+
+  /* list */
+  function categories() {
+    var seen = {}, out = ["All"];
+    state.posts.forEach(function (p) { if (p.category && !seen[p.category]) { seen[p.category] = 1; out.push(p.category); } });
+    return out;
+  }
+  function renderChips() {
+    var cats = categories();
+    if (cats.indexOf(filter) < 0) filter = "All";
+    var box = $("#chips"); box.replaceChildren();
+    cats.forEach(function (c) {
+      box.append(h("button", { class: "chip", type: "button", text: c, "aria-pressed": String(c === filter),
+        onclick: function () { filter = c; renderChips(); renderGrid(); } }));
+    });
+  }
+  function renderGrid() {
+    var grid = $("#grid"); grid.replaceChildren();
+    var q = query.toLowerCase();
+    var list = state.posts.filter(function (p) {
+      return (filter === "All" || p.category === filter) && (!q || (p.title + " " + p.excerpt).toLowerCase().indexOf(q) >= 0);
+    });
+    if (!list.length) {
+      grid.append(h("div", { class: "empty", text: state.posts.length ? "No posts match. Try another topic or search." : "No posts yet. Turn on Edit mode and choose New post." }));
+      return;
+    }
+    list.forEach(function (p, i) {
+      var feat = i === 0 && filter === "All" && !q;
+      var cover = h("div", { class: "cover", role: "img", "aria-label": "Cover for " + p.title });
+      paintCover(cover, p.cover);
+      var title = editable(h("h3", { text: p.title }), true, function (v) { p.title = v; saveSoon(); });
+      var excerpt = editable(h("p", { class: "excerpt", text: p.excerpt }), false, function (v) { p.excerpt = v.trim(); saveSoon(); });
+      var card = h("article", { class: "card" + (feat ? " featured" : "") }, cover,
+        h("div", { class: "card-body" },
+          h("div", { class: "meta" }, h("span", { class: "tag", text: p.category }), h("span", { text: fmtDate(p.date) + " · " + minutes(p) + " min read" })),
+          title, excerpt,
+          h("button", { class: "read", type: "button", text: editing ? "Open to edit the full post" : "Read post", onclick: function () { openReader(p.id); } })));
+      if (!editing) card.addEventListener("click", function (e) { if (!e.target.closest("button")) openReader(p.id); });
+      grid.append(card);
+    });
+  }
+  var SECTIONS = [
+    { key: "education", label: "Education", add: "Add education", blank: { title: "Course or degree", meta: "Institute · Years", text: "" } },
+    { key: "learning", label: "Self-education platforms", add: "Add a platform", blank: { title: "Platform or course name", meta: "Topic · Year", text: "What you learned." } },
+    { key: "work", label: "Work experience", add: "Add experience", blank: { title: "Job title", meta: "Company · Years", text: "What you did there." } },
+    { key: "goals", label: "Personal goals", add: "Add a goal", blank: { title: "A goal", meta: "Target date", text: "Why it matters." } }
+  ];
+  function renderAbout() {
+    var box = $("#aboutGrid"); box.replaceChildren();
+    SECTIONS.forEach(function (sec) {
+      var list = state.about[sec.key] = state.about[sec.key] || [];
+      var panel = h("div", { class: "panel about-card" }, h("h3", { text: sec.label }));
+      list.forEach(function (it, i) {
+        var row = h("div", { class: "item" });
+        row.append(editable(h("h4", { text: it.title }), true, function (v) { it.title = v; saveSoon(); }));
+        row.append(editable(h("p", { class: "item-meta", text: it.meta }), true, function (v) { it.meta = v; saveSoon(); }));
+        if (it.text || editing) row.append(editable(h("p", { class: "item-text", text: it.text }), false, function (v) { it.text = v.trim(); saveSoon(); }));
+        if (editing) row.append(h("button", { class: "btn danger small", type: "button", text: "Remove", onclick: function () { list.splice(i, 1); save(); renderAbout(); } }));
+        panel.append(row);
+      });
+      if (!list.length) panel.append(h("p", { class: "item-meta", text: "Nothing here yet." }));
+      if (editing) panel.append(h("button", { class: "btn small", type: "button", text: "+ " + sec.add, onclick: function () { list.push(clone(sec.blank)); save(); renderAbout(); } }));
+      box.append(panel);
+    });
+    var contacts = state.about.contact = state.about.contact || [];
+    var cp = h("div", { class: "panel about-card contact" }, h("h3", { text: "Contact" }));
+    contacts.forEach(function (c, i) {
+      var row = h("div", { class: "contact-row" });
+      row.append(editable(h("span", { class: "lbl", text: c.label }), true, function (v) { c.label = v; saveSoon(); }));
+      row.append(editable(h("span", { class: "val", text: c.value }), true, function (v) { c.value = v; saveSoon(); }));
+      if (editing) row.append(h("button", { class: "btn danger small", type: "button", text: "Remove", onclick: function () { contacts.splice(i, 1); save(); renderAbout(); } }));
+      else row.append(h("button", { class: "btn small", type: "button", text: "Copy", onclick: function () {
+        var miss = function () { toast("Copy is not available here. Select the text instead."); };
+        try { navigator.clipboard.writeText(c.value).then(function () { toast(c.label + " copied"); }, miss); } catch (e) { miss(); }
+      } }));
+      cp.append(row);
+    });
+    if (!contacts.length) cp.append(h("p", { class: "item-meta", text: "No contact details yet." }));
+    if (editing) cp.append(h("button", { class: "btn small", type: "button", text: "+ Add contact detail", onclick: function () { contacts.push({ label: "Label", value: "Details" }); save(); renderAbout(); } }));
+    box.append(cp);
+  }
+  function render() { paintFields(); renderChips(); renderGrid(); renderAbout(); }
+
+  /* reader */
+  function findPost(id) { for (var i = 0; i < state.posts.length; i++) if (state.posts[i].id === id) return state.posts[i]; return null; }
+  function openReader(id) { openId = id; renderReader(); var r = $("#reader"); r.hidden = false; r.scrollTop = 0; var b = r.querySelector("button"); if (b) b.focus(); }
+  function closeReader() { openId = null; $("#reader").hidden = true; render(); }
+
+  function shrink(file, cb) {
+    var fr = new FileReader();
+    fr.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var s = Math.min(1, 1100 / img.width), c = document.createElement("canvas");
+        c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+        cb(c.toDataURL("image/jpeg", 0.8));
+      };
+      img.onerror = function () { toast("That file is not an image this page can read."); };
+      img.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  }
+
+  function renderReader() {
+    var p = findPost(openId), r = $("#reader");
+    if (!p) { closeReader(); return; }
+    var del = null;
+    var top = h("div", { class: "reader-top" },
+      h("button", { class: "btn", type: "button", text: "← Back to posts", onclick: closeReader }));
+    if (editing) {
+      del = h("button", { class: "btn danger", type: "button", text: "Delete post", onclick: function () {
+        if (del.dataset.armed) {
+          state.posts = state.posts.filter(function (x) { return x.id !== p.id; });
+          save(); closeReader(); toast("Post deleted");
+        } else {
+          del.dataset.armed = "1"; del.textContent = "Click again to delete";
+          setTimeout(function () { if (del) { delete del.dataset.armed; del.textContent = "Delete post"; } }, 3000);
+        }
+      } });
+      top.append(del);
+    }
+
+    var cover = h("div", { class: "cover", role: "img", "aria-label": "Post cover" });
+    paintCover(cover, p.cover);
+
+    var panel = null;
+    if (editing) {
+      var sw = h("div", { class: "swatches" });
+      COVERS.forEach(function (_, k) {
+        var b = h("button", { class: "sw", type: "button", "aria-label": "Cover style " + (k + 1), "aria-pressed": String(!p.cover.img && p.cover.k === k),
+          onclick: function () { p.cover = { k: k }; save(); renderReader(); } });
+        b.style.backgroundImage = COVERS[k];
+        sw.append(b);
+      });
+      var fileInput = h("input", { class: "sr", type: "file", accept: "image/*", id: "coverFile", onchange: function () {
+        var f = fileInput.files[0]; if (!f) return;
+        shrink(f, function (src) { p.cover = { img: src }; save(); renderReader(); });
+      } });
+      sw.append(h("label", { class: "btn", for: "coverFile", text: "Upload image" }), fileInput);
+
+      var cat = h("input", { id: "catInput", type: "text", value: p.category, maxlength: "24", oninput: function () { p.category = oneLine(cat.value) || "Notes"; saveSoon(); } });
+      var date = h("input", { id: "dateInput", type: "date", value: p.date, oninput: function () { if (date.value) { p.date = date.value; saveSoon(); } } });
+      panel = h("div", { class: "panel" },
+        h("div", { class: "field" }, h("label", { text: "Cover" }), sw),
+        h("div", { class: "field-row" },
+          h("div", { class: "field" }, h("label", { for: "catInput", text: "Topic" }), cat),
+          h("div", { class: "field" }, h("label", { for: "dateInput", text: "Date" }), date)));
+    }
+
+    var meta = h("div", { class: "meta" }, h("span", { class: "tag", text: p.category }), h("span", { text: fmtDate(p.date) + " · " + minutes(p) + " min read" }), h("span", { text: "by " + (state.site.author || "") }));
+    var title = editable(h("h1", { text: p.title }), true, function (v) { p.title = v; saveSoon(); });
+
+    var prose = h("div", { class: "prose" });
+    if (editing) {
+      prose.textContent = p.body.join("\n\n");
+      editable(prose, false, function (v) { p.body = v.split(/\n+/).map(function (s) { return s.trim(); }).filter(Boolean); saveSoon(); });
+      prose.setAttribute("role", "textbox"); prose.setAttribute("aria-multiline", "true"); prose.setAttribute("aria-label", "Post text");
+    } else {
+      p.body.forEach(function (t) { prose.append(h("p", { text: t })); });
+    }
+
+    var summary = null;
+    if (editing) {
+      var sBox = editable(h("p", { class: "excerpt", text: p.excerpt }), false, function (v) { p.excerpt = v.trim(); saveSoon(); });
+      summary = h("div", { class: "field" }, h("label", { text: "Summary shown on the card" }), sBox);
+    }
+
+    r.replaceChildren(h("div", { class: "reader-in" }, top, cover, panel, meta, title, summary, prose));
+  }
+
+  /* actions */
+  function setEditing(on) {
+    editing = on;
+    $("#editSwitch").setAttribute("aria-checked", String(on));
+    $("#tools").hidden = !on;
+    document.body.classList.toggle("editing", on);
+    render();
+    if (openId) renderReader();
+    if (on) toast("Edit mode on. Click any text to change it.");
+  }
+  $("#editSwitch").addEventListener("click", function () { setEditing(!editing); });
+
+  $("#newPost").addEventListener("click", function () {
+    var id = "p" + Date.now().toString(36);
+    var today = new Date(); var iso = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, "0") + "-" + String(today.getDate()).padStart(2, "0");
+    state.posts.unshift({ id: id, title: "Untitled post", category: "Notes", date: iso, cover: { k: Math.floor(Math.random() * COVERS.length) },
+      excerpt: "Write a short summary for the card here.", body: ["Start writing here. Press Enter twice for a new paragraph."] });
+    filter = "All"; query = ""; $("#search").value = "";
+    save(); render(); openReader(id);
+  });
+
+  var resetBtn = $("#resetBtn");
+  resetBtn.addEventListener("click", function () {
+    if (resetBtn.dataset.armed) {
+      delete resetBtn.dataset.armed; resetBtn.textContent = "Discard my changes";
+      try { localStorage.removeItem(KEY); } catch (e) {} location.reload();
+    } else {
+      resetBtn.dataset.armed = "1"; resetBtn.textContent = "Click again to erase your edits";
+      setTimeout(function () { delete resetBtn.dataset.armed; resetBtn.textContent = "Discard my changes"; }, 3000);
+    }
+  });
+
+  var modal = $("#modal"), dataText = $("#dataText");
+  $("#dataBtn").addEventListener("click", function () { dataText.value = JSON.stringify(state, null, 2); modal.hidden = false; dataText.focus(); });
+  $("#dataClose").addEventListener("click", function () { modal.hidden = true; });
+  $("#dataCopy").addEventListener("click", function () {
+    var done = function () { toast("Copied to the clipboard"); };
+    var fallback = function () { dataText.select(); toast("Press Ctrl+C or Cmd+C to copy the selected text"); };
+    try { navigator.clipboard.writeText(dataText.value).then(done, fallback); } catch (e) { fallback(); }
+  });
+  $("#dataApply").addEventListener("click", function () {
+    try {
+      var o = JSON.parse(dataText.value);
+      if (!valid(o)) throw new Error("shape");
+      o.posts.forEach(function (p) {
+        p.id = String(p.id || Math.random().toString(36).slice(2));
+        p.title = String(p.title || "Untitled"); p.category = String(p.category || "Notes");
+        p.excerpt = String(p.excerpt || ""); p.date = String(p.date || "");
+        p.body = Array.isArray(p.body) ? p.body.map(String) : [String(p.body || "")];
+        p.cover = p.cover && (p.cover.img || typeof p.cover.k === "number") ? p.cover : { k: 0 };
+      });
+      if (!o.about) o.about = clone(SAMPLE.about);
+      state = o; save(); modal.hidden = true;
+      if (openId && !findPost(openId)) closeReader(); else { render(); if (openId) renderReader(); }
+      toast("Data applied");
+    } catch (e) { toast("That text is not valid blog data. Check it and try again."); }
+  });
+
+  $("#aboutBtn").addEventListener("click", function () {
+    if (openId) closeReader();
+    $("#about").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  $("#search").addEventListener("input", function (e) { query = e.target.value.trim(); renderGrid(); });
+
+  /* theme */
+  function applyTheme(t) { if (t) document.documentElement.setAttribute("data-theme", t); }
+  try { applyTheme(localStorage.getItem(THEME_KEY)); } catch (e) {}
+  $("#themeBtn").addEventListener("click", function () {
+    var cur = document.documentElement.getAttribute("data-theme");
+    var dark = cur ? cur === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var next = dark ? "light" : "dark";
+    applyTheme(next);
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    if (!modal.hidden) modal.hidden = true; else if (openId) closeReader();
+  });
+  try { document.execCommand("defaultParagraphSeparator", false, "p"); } catch (e) {}
+
+  if (owner) $("#editSwitch").hidden = false;
+  $("#exitBtn").addEventListener("click", function () { try { localStorage.removeItem(OWNER_FLAG); } catch (e) {} location.reload(); });
+  render();
+  if (!draft) {
+    fetch("content.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (o) {
+      if (!valid(o)) return;
+      if (!o.about) o.about = clone(SAMPLE.about);
+      state = o; render(); if (openId) renderReader();
+    }).catch(function () {});
+  }
+})();
+</script>
